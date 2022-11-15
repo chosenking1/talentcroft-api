@@ -1,0 +1,33 @@
+name: Deploy
+# Trigger the workflow on push and
+# pull request events on the production branch
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+# Authenticate to the the server via ssh
+# and run our deployment script
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy to server
+        uses: appleboy/ssh-action@master
+        with:
+          host: 206.189.30.44
+          port: 2233
+          username: talentx
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /var/www/grid
+            git pull origin main
+            bash /var/www/grid/deploy.sh
+            echo 'deployed'
+
+
+
