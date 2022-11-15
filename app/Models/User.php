@@ -23,6 +23,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    use HasFactory;
 
     protected $fillable = [
         'first_name', 'last_name', 'email', 'password', 'tags', 'provider_name',
@@ -53,27 +54,9 @@ class User extends Authenticatable
         return $this->hasMany(Bank::class);
     }
 
-    public function projects(): HasMany
+    public function movies()
     {
-        return $this->hasMany(Project::class);
-    }
-
-    public function setting()
-    {
-        return $this->hasOne(Setting::class);
-    }
-
-    public function metrics(): Attribute
-    {
-        return Attribute::make(
-            get: fn() => [
-                'followers' => 0,
-                'following' => 0,
-                'wallet' => nf(0, 2),
-                'collections' => 0,
-                'items' => $this->projects->count(),
-            ],
-        );
+        return $this->hasMany(Movie::class);
     }
 
     public function name(): Attribute

@@ -30,7 +30,7 @@ class UserRepository extends BaseRepository
     final public function prepareUserData(User $user): User
     {
         $user->append(['name', 'metrics']);
-        $user->projects;
+        $user->movies;
         $user->setting;
         $user->notifications;
         return $user;

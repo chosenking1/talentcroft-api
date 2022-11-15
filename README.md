@@ -21,7 +21,7 @@ Setting up this boiler plate is easy especially for those familiar with the lara
 - Set up the database credentials to suit your configuration
 - Run `php artisan migrate` to migrate the tables into your database
 - Run `php artisan passport:install` to get your personal access client and grant created
-- Run `php artisan db:seed` to seed an initial user to your users table
+- Run `php artisan db:seed --class=UserTableSeeder;` to seed an initial user to your users table
 - Download the postman collection from the link above
 - Import the downloaded collection
 - Serve the application on any port of your choice

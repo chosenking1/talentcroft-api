@@ -5,18 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProjectFile extends Model
+class MovieFile extends Model
 {
     use HasFactory;
 
-    protected $table = 'project_files';
+    protected $table = 'movie_files';
 
     protected $primaryKey = 'id';
 
-    protected $fillable = ['project_id', 'name', 'url', 'thumbnail', 'type', 'size', 'preview'];
+    protected $fillable = ['url', 'thumbnail', 'type', 'size',];
 
     public function project()
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(Movie::class);
     }
 }

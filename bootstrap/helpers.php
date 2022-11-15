@@ -46,18 +46,6 @@ function nf($num = 0, $d = 2)
  * @param string $path
  * @return string
  */
-function moveFile($file, $path = 'uploads'): string
-{
-    try {
-        if (!$file || !$file->isValid()) {
-            return asset('6.jpg');
-        }
-        $s = cloudinary()->upload($file->getRealPath(), ['folder' => "getgrid/$path", 'use_filename' => true]);
-        return $s->getSecurePath();
-    } catch (\Exception $e) {
-        return asset('6.jpg');
-    }
-}
 
 function isLocalhost($whitelist = ['127.0.0.1', '::1', 'localhost', ':8000'])
 {
@@ -105,22 +93,4 @@ function showSearchHighlight($text)
  * Notify admin about issues
  * @param mixed $data
  */
-function notifyAdmin(mixed $data)
-{
-    if (!is_array($data)){
-        $data = [];
-        $data = ['subject' => 'Urgent Attention'];
-        $data['message'] = $message;
-    }
-    Mail::send('emails.mailer', compact('data'), function ($message) use ($data) {
-        $message->from('grid@talentx.africa', 'GetGrid');
-        $message->to('idowu.immanuel17@gmail.com', 'Immanuel Idowu');
-        $message->cc('dejiomoloja@gmail.com', 'Deji Omoloja');
-        $message->subject($data['subject']);
-    });
-}
 
-function sendSlackMessage()
-{
-
-}

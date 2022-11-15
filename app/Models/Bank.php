@@ -13,6 +13,6 @@ class Bank extends Model
 
     public function project()
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(Movie::class);
     }
 }
