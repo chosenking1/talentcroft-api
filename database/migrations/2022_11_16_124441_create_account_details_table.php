@@ -14,8 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('account_details', function (Blueprint $table) {
-            $table->id();
+            $table->id()->from(time());
+            $table->integer('user_id');
+            $table->string('bank_code');
+            $table->string('bank_name');
+            $table->string('account_name');
+            $table->string('is_default')->default('false');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
