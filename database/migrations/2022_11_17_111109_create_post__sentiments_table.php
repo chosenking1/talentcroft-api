@@ -14,7 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('post__sentiments', function (Blueprint $table) {
-            $table->id();
+            $table->id()->from(time());
+            $table->string('user_id');
+            $table->enum('sentiments');
             $table->timestamps();
         });
     }
