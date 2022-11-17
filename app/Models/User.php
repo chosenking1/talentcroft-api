@@ -25,10 +25,7 @@ class User extends Authenticatable
      */
     use HasFactory;
 
-    protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'tags', 'provider_name',
-        'provider_id','user_type', 'phone_number', 'avatar', 'banner', 'bio'
-    ];
+    protected $guarded = [];
     /**
      * The attributes that should be hidden for serialization.
      *
