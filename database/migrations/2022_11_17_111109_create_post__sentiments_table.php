@@ -15,7 +15,9 @@ return new class extends Migration
     {
         Schema::create('post__sentiments', function (Blueprint $table) {
             $table->id()->from(time());
-            $table->string('user_id');
+            $table->bigInteger('user_id')->unsigned();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->enum('sentiments', ['DISLIKE', 'LIKE']);
             $table->timestamps();
         });
