@@ -15,8 +15,5 @@ class Movie_List extends Model
 
     protected $guarded = [];
 
-    public function project()
-    {
-        return $this->belongsTo(Movie::class);
-    }
+
 }

@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id()->from(time());
-            $table->string('user_id');
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->longtext('description')->nullable();
             $table->string('url')->nullable();
             $table->timestamps();
