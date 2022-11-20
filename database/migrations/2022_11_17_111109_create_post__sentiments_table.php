@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('post__sentiments', function (Blueprint $table) {
             $table->id()->from(time());
             $table->string('user_id');
-            $table->enum('sentiments');
+            $table->enum('sentiments', ['liked', 'disliked']);
             $table->timestamps();
         });
     }
