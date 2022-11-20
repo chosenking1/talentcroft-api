@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->json('tags')->nullable();
-            $table->string('type')->default('movie');
+            $table->enum('type', ['movie', 'series']);
             $table->string('status')->default('draft');
             $table->string('visibility')->default('private');
             $table->timestamp('release_date')->nullable();

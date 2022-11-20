@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use App\Models\Post;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,8 +17,9 @@ return new class extends Migration
     {
         Schema::create('post__sentiments', function (Blueprint $table) {
             $table->id()->from(time());
+            $table->foreignIdFor(User::class);
             $table->foreignIdFor(Post::class);
-            $table->enum('sentiments', ['liked', 'disliked']);
+            $table->enum('sentiment', ['liked', 'disliked']);
             $table->timestamps();
         });
     }

@@ -13,7 +13,9 @@ class MovieFile extends Model
 
     protected $primaryKey = 'id';
 
-    protected $fillable = ['url', 'thumbnail', 'type', 'size',];
+    protected $guarded = [];
+
+    protected $casts = ['thumbnails' => 'array'];
 
     public function project()
     {

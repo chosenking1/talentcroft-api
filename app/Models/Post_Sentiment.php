@@ -15,8 +15,31 @@ class Post_Sentiment extends Model
 
     protected $guarded = [];
 
-    public function user()
+    public function post()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Post::class);
+    }
+
+    public function scopeLikes($query)
+    {
+        return $query->where('sentiment', 'liked');
+    }
+
+    public function scopeDislikes($query)
+    {
+        return $query->where('sentiment', 'disliked');
+    }
+
+
+    public function getIsLikedAttribute()
+    {
+        return $this->sentiment === 'liked';
+    }
+
+    /**
+     */
+    public function getIsDislikedAttribute()
+    {
+        return $this->sentiment === 'disliked';
     }
 }

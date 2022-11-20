@@ -48,20 +48,32 @@ class User extends Authenticatable
      */
     public function bank()
     {
-        return $this->hasMany(Bank::class);
+        return $this->hasMany(AccountDetails::class);
     }
 
     public function movies()
     {
         return $this->hasMany(Movie::class);
     }
-    public function post_Sentiments(): HasOne
-    {
-        return $this->hasOne(Post_Sentiment::class);
-    }
+
     public function post(): HasMany
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function following()
+    {
+        return $this->hasMan(Following::class);
+    }
+
+    public function followers()
+    {
+        return $this->hasMan(Followers::class);
+    }
+
+    public function settings()
+    {
+        return $this->hasOne(Settings::class);
     }
 
     public function name(): Attribute
@@ -71,4 +83,13 @@ class User extends Authenticatable
         );
     }
 
+    public function getFollowingAttributes()
+    {
+        return $this->following()->count();
+    }
+
+    public function getFollowersAttributes()
+    {
+        return $this->following()->count();
+    }
 }

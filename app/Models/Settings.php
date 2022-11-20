@@ -9,5 +9,14 @@ class Settings extends Model
 {
     use HasFactory;
 
+    protected $table = 'settings';
+
+    protected $primaryKey = 'id';
+
     protected $guarded = [];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
