@@ -55,6 +55,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Movie::class);
     }
+    public function post_Sentiments(): HasOne
+    {
+        return $this->hasOne(Post_Sentiment::class);
+    }
+    public function post(): HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
 
     public function name(): Attribute
     {

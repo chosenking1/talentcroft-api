@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->longtext('description')->nullable();
             $table->string('type')->nullable();
-            $table->string('genre');
+            $table->string('genre')->nullable();
             $table->json('content')->nullable();
             $table->timestamps();
         });
