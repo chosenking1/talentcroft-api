@@ -5,8 +5,6 @@ namespace App\Models;
 use App\Traits\UseNotifier;
 use App\Traits\UseStorage;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -63,12 +61,12 @@ class User extends Authenticatable
 
     public function following()
     {
-        return $this->hasMan(Following::class);
+        return $this->hasMany(Following::class);
     }
 
     public function followers()
     {
-        return $this->hasMan(Followers::class);
+        return $this->hasMany(Followers::class);
     }
 
     public function settings()
@@ -83,13 +81,15 @@ class User extends Authenticatable
         );
     }
 
-    public function getFollowingAttributes()
+    public function metrics(): Attribute
     {
-        return $this->following()->count();
-    }
-
-    public function getFollowersAttributes()
-    {
-        return $this->following()->count();
+        return Attribute::make(
+            get: fn() => [
+            'followers' => $this->followers->count(),
+            'following' => $this->following->count(),
+            'wallet' => nf(0, 2),
+            'posts' => $this->post->count(),
+        ],
+        );
     }
 }

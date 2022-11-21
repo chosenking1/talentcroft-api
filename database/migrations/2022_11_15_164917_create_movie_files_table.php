@@ -17,8 +17,11 @@ return new class extends Migration
         Schema::create('movie_files', function (Blueprint $table) {
             $table->id()->from(time());
             $table->foreignIdFor(Movie::class);
+            $table->string('name');
+            $table->string('decription');
             $table->string('url')->nullable();
             $table->longtext('thumbnail')->nullable();
+            $table->string('preview')->nullable();
             $table->string('size')->nullable();
             $table->string('duration')->nullable();
             $table->json('meta')->nullable();

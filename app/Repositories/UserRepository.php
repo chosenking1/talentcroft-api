@@ -14,15 +14,6 @@ class UserRepository extends BaseRepository
         $this->user = $user;
     }
 
-    public function getUserByUuid(string $uuid)
-    {
-        return $this->user->getUserByUuid($uuid);
-    }
-
-    public function availableDrivers(){
-        return $this->user->availableDriver();
-    }
-
       /**
      * @param User $user
      * @return User
@@ -30,9 +21,8 @@ class UserRepository extends BaseRepository
     final public function prepareUserData(User $user): User
     {
         $user->append(['name', 'metrics']);
-        $user->movies;
+        $user->post;
         $user->setting;
-        $user->notifications;
         return $user;
     }
 
