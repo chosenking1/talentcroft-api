@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Route;
         Route::post('/login', [UserController::class, 'login']);
         Route::post('/register', [UserController::class, 'register']);
         // update user credentials
-        Route::post('/update/{id}', [UserController::class, 'update']);
+        Route::post('/update/{id}', [UserController::class, 'updateUser']);
 
         //get all users
         Route::get('/allusers', [UserController::class,'getAllUsers']);

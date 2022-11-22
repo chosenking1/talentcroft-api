@@ -98,7 +98,7 @@ class UserController extends Controller
             'last_name' => 'required|min:2',
             'email' => 'required|email|unique:users',
              'phone_number' => 'required|unique:users,phone_number',
-            'password' => 'required'
+            
         ]);
      
         try{
@@ -107,13 +107,13 @@ class UserController extends Controller
                 'last_name'=>$request->last_name,
                 'email'=>$request->email,
                 'phone_number'=>$request->phone_number,
-                'password'=>Hash::make($request->password),
+                // 'password'=>Hash::make($request->password),
             ]);
-            $token = $user->createToken('app')->accessToken;
+            // $token = $user->createToken('app')->accessToken;
 
             return response([
-                'message'=>'registeration successful',
-                'token'=>$token,
+                'message'=>'user updated successful',
+                // 'token'=>$token,
                 'user'=>$user,
             ], 200);
         }catch(Exception $exception){
