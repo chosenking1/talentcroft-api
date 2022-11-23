@@ -97,7 +97,7 @@ class UserController extends Controller
             'first_name' => 'required|min:2',
             'last_name' => 'required|min:2',
             'email' => 'required|email|unique:users',
-             'phone_number' => 'required|unique:users,phone_number',
+            'phone_number' => 'required|unique:users,phone_number',
             
         ]);
      
@@ -107,23 +107,20 @@ class UserController extends Controller
                 'last_name'=>$request->last_name,
                 'email'=>$request->email,
                 'phone_number'=>$request->phone_number,
-                // 'password'=>Hash::make($request->password),
+                'password'=>Hash::make($request->password),
             ]);
-            // $token = $user->createToken('app')->accessToken;
-
+            // generate Random Token min of 10 and  characters
+             $token = rand(10,100000);
             return response([
                 'message'=>'user updated successful',
-                // 'token'=>$token,
+                'token'=>$token,
                 'user'=>$user,
             ], 200);
         }catch(Exception $exception){
             return response([
                 'message'=>$exception->getMessage(),
             ], 400);
-        }
-
-
-        
+        } 
     }
 
     public function getAllUsers(){
