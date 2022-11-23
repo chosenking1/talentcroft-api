@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Exception;
+
 
 class UserController extends Controller
 {
@@ -101,5 +103,44 @@ class UserController extends Controller
 
 //        return $this->respondWithSuccess('Deleted successfully');
         return $this->respondWithSuccess('status','People');
+    }
+
+    public function updateUser(Request $request, $id){
+        $request->validate([
+            'first_name' => 'required|min:2',
+            'last_name' => 'required|min:2',
+            'email' => 'required|email|unique:users',
+             'phone_number' => 'required|unique:users,phone_number',
+            
+        ]);
+     
+        try{
+            $user = User::findorfail($id)->update([
+                'first_name'=>$request->first_name,
+                'last_name'=>$request->last_name,
+                'email'=>$request->email,
+                'phone_number'=>$request->phone_number,
+                // 'password'=>Hash::make($request->password),
+            ]);
+            // $token = $user->createToken('app')->accessToken;
+
+            return response([
+                'message'=>'user updated successful',
+                // 'token'=>$token,
+                'user'=>$user,
+            ], 200);
+        }catch(Exception $exception){
+            return response([
+                'message'=>$exception->getMessage(),
+            ], 400);
+        }
+
+
+        
+    }
+
+    public function getAllUsers(){
+        $users = User::latest()->get();
+        return response()->json($users);
     }
 }
