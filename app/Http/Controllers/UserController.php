@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 use App\Repositories\UserRepository;
 use App\Models\User;
+use http\Env\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -51,13 +53,8 @@ class UserController extends Controller
     /**
      * Gets Authenticated User
      * @param Request $request
-     * @return JsonResponse
+     * @return array
      */
-    final public function getAuthenticatedUser(Request $request): JsonResponse
-    {
-        if (!$user = getUser()) return $this->respondWithError('Account not found', 404);
-        return $this->respondWithSuccess($this->prepareUserData($user));
-    }
 
     /**
      * @param Request $request
@@ -82,14 +79,41 @@ class UserController extends Controller
         return $this->respondWithSuccess(['data' => ['token' => $accessToken, 'user' => $this->repo->prepareUserData($user)]], 201);
     }
 
-    public function deleteUser($id)
+    final public function getAuthenticatedUser(Request $request, $id): JsonResponse
     {
-        $user = User::whereEmail($id)->firstOrFail();
-        $user->events()->get()->each->delete();
-        $user->tips()->get()->each->delete();
-        $user->wishes()->get()->each->delete();
-        $user->delete();
-        return $this->respondWithSuccess('Deleted successfully');
+        $user = User::findOrFail($id);
+        $authenticated = getUser()->id;
+        if ($user->id == $authenticated) return $this->respondWithSuccess(['data'=>['message' =>'Authenticated User', 'user' => $this->repo->prepareUserData($user)]], 201);
+        return $this->respondWithError(['data'=>['message' =>'Account not found', 'user' => []]], 404);
+    }
+
+    public function getUser($id)
+    {
+        $user = User::findOrFail($id);
+        return $this->respondWithSuccess(['data' => ['user' => $this->prepareUserData($user)]], 201);
+    }
+
+    // public function deleteUser($id)
+    // {
+    //    $user = User::whereEmail($id)->firstOrFail();
+    //    $user->events()->get()->each->delete();
+    //    $user->tips()->get()->each->delete();
+    //    $user->wishes()->get()->each->delete();
+    //    $user->delete();
+    //     $user = User::find($id);
+    //     $user -> delete();
+
+    //    return $this->respondWithSuccess(['data' => ['message' => 'Deleted successfully', 'user' => $this->repo->prepareUserData($user)]], 201);
+    // }
+
+    final public function deleteUser($id)
+    {
+        // if (auth()->user()->user_type = 'admin'){
+            $user = User::destroy($id);
+            return $this->respondWithSuccess(['data' => ['message' => 'user '.$id.' has been deleted' ,'pricing' => $user]], 201);
+        // } else {
+            // return$this->respondWithSuccess(['message' => 'Only Admin can delete User'], 201);
+        // }
     }
 
     public function updateUser(Request $request, $id){
@@ -97,7 +121,7 @@ class UserController extends Controller
             'first_name' => 'required|min:2',
             'last_name' => 'required|min:2',
             'email' => 'required|email|unique:users',
-            'phone_number' => 'required|unique:users,phone_number',
+             'phone_number' => 'required|unique:users,phone_number',
             
         ]);
      
@@ -125,6 +149,6 @@ class UserController extends Controller
 
     public function getAllUsers(){
         $users = User::latest()->get();
-        return response()->json($users);
+        return $this->respondWithSuccess(['data' => ['message' => 'All talencroft users', 'users' => $users]], 201);
     }
 }

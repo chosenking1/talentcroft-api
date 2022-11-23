@@ -28,13 +28,17 @@ use Illuminate\Support\Facades\Route;
 //public routes
     /** AUTHENTICATION AND USER DETAILS */
     Route::group(['prefix' => 'user'], function () {
+        // login
         Route::post('/login', [UserController::class, 'login']);
+        // register
         Route::post('/register', [UserController::class, 'register']);
-        
         // update user credentials
         Route::post('/update/{id}', [UserController::class, 'updateUser']);
+
         //get all users
         Route::get('/allusers', [UserController::class,'getAllUsers']);
+        //get a user
+        Route::get('/{id}', [UserController::class,'getUser']);
     });
 
 
