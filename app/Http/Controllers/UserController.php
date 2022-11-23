@@ -118,10 +118,9 @@ class UserController extends Controller
 
     public function updateUser(Request $request, $id){
         $request->validate([
-            'first_name' => 'nullable|min:2',
-            'last_name' => 'nullable|min:2',
-            'email' => 'nullable|email|unique:users',
-            'phone_number' => 'nullable|unique:users,phone_number',
+            'first_name' => 'required|min:2',
+            'last_name' => 'required|min:2',
+             'phone_number' => 'required|unique:users,phone_number',
             
         ]);
      
@@ -129,25 +128,26 @@ class UserController extends Controller
             $user = User::findorfail($id)->update([
                 'first_name'=>$request->first_name,
                 'last_name'=>$request->last_name,
-                'email'=>$request->email,
                 'phone_number'=>$request->phone_number,
-                // 'password'=>Hash::make($request->password),
+                'avatar'=>$request->avatar,
+                'location'=>$request->location,
+                'bio'=>$request->bio,
+                'tags'=>$request->tags,
+                'banner'=>$request->banner,
+                'password'=>Hash::make($request->password),
             ]);
-            // $token = $user->createToken('app')->accessToken;
-
+            // generate Random Token min of 10 and  characters
+             $token = rand(10,100000);
             return response([
                 'message'=>'user updated successful',
-                // 'token'=>$token,
+                'token'=>$token,
                 'user'=>$user,
             ], 200);
         }catch(Exception $exception){
             return response([
                 'message'=>$exception->getMessage(),
             ], 400);
-        }
-
-
-        
+        } 
     }
 
     public function getAllUsers(){
