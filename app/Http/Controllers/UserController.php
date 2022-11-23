@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ForgetRequest;
-use App\Repositories\UserRepository;
+use Exception;
 use App\Models\User;
 use http\Env\Response;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\ForgetRequest;
+use App\Mail\ForgetMail;
+use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
-use Exception;
 
 
 class UserController extends Controller
@@ -159,6 +161,33 @@ class UserController extends Controller
 
 
     public function forgetpassword(ForgetRequest $request){
+           $email = $request->email;
+        //    check if the email exists in the database
+        if(User::where('email', $email)->doesntExist()){
+            return response([
+                'message' =>'Email invalid',
+            ], 401);
+        }
+            // generate Randome Token min of 10 and  characters
+        $token = rand(10,100000);
+
+        try{
+            DB::table('password_resets')->insert([
+                'email'=>$email,
+                'token'=>$token,
+            ]);
+            // sending mail to user
+            Mail::to($email)->send(new ForgetMail($token));
+            return response([
+                'message'=> 'Reset password Email sent to your mail'
+            ], 200);
+
+        }catch(Exception $exception){
+            return response([
+                'message'=>$exception->getMessage(),
+            ], 400);
+
+        }
 
     }
 }
