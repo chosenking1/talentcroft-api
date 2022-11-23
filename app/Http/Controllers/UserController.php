@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Http\Requests\ForgetRequest;
 use App\Repositories\UserRepository;
 use App\Models\User;
 use http\Env\Response;
@@ -153,5 +155,10 @@ class UserController extends Controller
     public function getAllUsers(){
         $users = User::latest()->get();
         return $this->respondWithSuccess(['data' => ['message' => 'All talencroft users', 'users' => $users]], 201);
+    }
+
+
+    public function forgetpassword(ForgetRequest $request){
+
     }
 }
