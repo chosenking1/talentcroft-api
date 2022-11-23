@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 use App\Repositories\UserRepository;
 use App\Models\User;
+use http\Env\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -49,12 +51,19 @@ class UserController extends Controller
     /**
      * Gets Authenticated User
      * @param Request $request
-     * @return JsonResponse
+     * @return array
      */
-    final public function getAuthenticatedUser(Request $request): JsonResponse
+    final public function getAuthenticatedUser($id)
     {
-        if (!$user = getUser()) return $this->respondWithError('Account not found', 404);
-        return $this->respondWithSuccess($this->prepareUserData($user));
+//        if (!$user = getUser()) return $this->respondWithError('Account not found', 404);
+//        return $this->respondWithSuccess($this->prepareUserData($user));
+        $user =User::findorfail($id);
+
+        return Response()->json($user);
+
+//        return Response::json
+//        return $this->respondWithSuccess($this->prepareUserData($id));
+
     }
 
     /**
@@ -82,11 +91,15 @@ class UserController extends Controller
 
     public function deleteUser($id)
     {
-        $user = User::whereEmail($id)->firstOrFail();
-        $user->events()->get()->each->delete();
-        $user->tips()->get()->each->delete();
-        $user->wishes()->get()->each->delete();
-        $user->delete();
-        return $this->respondWithSuccess('Deleted successfully');
+//        $user = User::whereEmail($id)->firstOrFail();
+//        $user->events()->get()->each->delete();
+//        $user->tips()->get()->each->delete();
+//        $user->wishes()->get()->each->delete();
+//        $user->delete();
+        $user = User::find($id);
+        $user -> delete();
+
+//        return $this->respondWithSuccess('Deleted successfully');
+        return $this->respondWithSuccess('status','People');
     }
 }
