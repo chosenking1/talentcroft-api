@@ -120,7 +120,6 @@ class UserController extends Controller
         $request->validate([
             'first_name' => 'required|min:2',
             'last_name' => 'required|min:2',
-            'email' => 'required|email|unique:users',
              'phone_number' => 'required|unique:users,phone_number',
             
         ]);
@@ -129,8 +128,12 @@ class UserController extends Controller
             $user = User::findorfail($id)->update([
                 'first_name'=>$request->first_name,
                 'last_name'=>$request->last_name,
-                'email'=>$request->email,
                 'phone_number'=>$request->phone_number,
+                'avatar'=>$request->avatar,
+                'location'=>$request->location,
+                'bio'=>$request->bio,
+                'tags'=>$request->tags,
+                'banner'=>$request->banner,
                 'password'=>Hash::make($request->password),
             ]);
             // generate Random Token min of 10 and  characters
