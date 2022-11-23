@@ -31,7 +31,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password', 'remember_token', 'otp', 'deleted_at', 'fcm_token',
-        'blocked_at', 'blockage_reason', 'id', 'role_id', 'provider_name', 'provider_id'
+        'blocked_at', 'blockage_reason', 'role_id', 'provider_name', 'provider_id'
     ];
 
     /**
