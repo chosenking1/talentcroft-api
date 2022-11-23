@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ForgetRequest;
+use App\Http\Requests\ResetRequest;
 use App\Mail\ForgetMail;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
@@ -189,5 +190,36 @@ class UserController extends Controller
 
         }
 
+    }
+
+    public function resetpassword(ResetRequest $request){
+
+        $email = $request->email;
+        $token = $request->token;
+        $password = Hash::make($request->password);
+
+        // get email and token from the database
+        $emailcheck = DB::table('password_resets')->where('email',$email)->first();
+        $pincheck = DB::table('password_resets')->where('token',$token)->first();
+
+        // validate and check if they exits
+        if (!$emailcheck) {
+            return response([
+                'message' => "Email Not Found"
+            ],401);          
+         }
+         if (!$pincheck) {
+            return response([
+                'message' => "Pin Code Invalid"
+            ],401);          
+         }
+        //  update the password
+         DB::table('users')->where('email',$email)->update(['password' => $password]);
+         DB::table('password_resets')->where('email',$email)->delete();
+
+         return response([
+            'message' => 'Password Change Successfully'
+         ],200);
+    
     }
 }

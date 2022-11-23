@@ -41,8 +41,12 @@ use Illuminate\Support\Facades\Route;
         Route::get('/{id}', [UserController::class,'getUser']);
 
         // forgetpassword
-
         Route::post('/forgetpassword', [UserController::class, 'forgetpassword']);
+
+        // reset password
+         Route::post('/resetpassword', [UserController::class, 'resetpassword']);
+
+
     });
 
 
