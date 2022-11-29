@@ -1,16 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Repositories\UserRepository;
+
+use Exception;
 use App\Models\User;
 use http\Env\Response;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\ForgetRequest;
+use App\Http\Requests\ResetRequest;
+use App\Mail\ForgetMail;
+use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
-use Exception;
 
 
 class UserController extends Controller
@@ -118,10 +123,9 @@ class UserController extends Controller
 
     public function updateUser(Request $request, $id){
         $request->validate([
-            'first_name' => 'nullable|min:2',
-            'last_name' => 'nullable|min:2',
-            'email' => 'nullable|email|unique:users',
-            'phone_number' => 'nullable|unique:users,phone_number',
+            'first_name' => 'required|min:2',
+            'last_name' => 'required|min:2',
+             'phone_number' => 'required|unique:users,phone_number',
             
         ]);
      
@@ -129,29 +133,93 @@ class UserController extends Controller
             $user = User::findorfail($id)->update([
                 'first_name'=>$request->first_name,
                 'last_name'=>$request->last_name,
-                'email'=>$request->email,
                 'phone_number'=>$request->phone_number,
-                // 'password'=>Hash::make($request->password),
+                'avatar'=>$request->avatar,
+                'location'=>$request->location,
+                'bio'=>$request->bio,
+                'tags'=>$request->tags,
+                'banner'=>$request->banner,
+                'password'=>Hash::make($request->password),
             ]);
-            // $token = $user->createToken('app')->accessToken;
-
+            // generate Random Token min of 10 and  characters
+             $token = rand(10,100000);
             return response([
                 'message'=>'user updated successful',
-                // 'token'=>$token,
+                'token'=>$token,
                 'user'=>$user,
             ], 200);
         }catch(Exception $exception){
             return response([
                 'message'=>$exception->getMessage(),
             ], 400);
-        }
-
-
-        
+        } 
     }
 
     public function getAllUsers(){
         $users = User::latest()->get();
         return $this->respondWithSuccess(['data' => ['message' => 'All talencroft users', 'users' => $users]], 201);
+    }
+
+
+    public function forgetpassword(ForgetRequest $request){
+           $email = $request->email;
+        //    check if the email exists in the database
+        if(User::where('email', $email)->doesntExist()){
+            return response([
+                'message' =>'Email invalid',
+            ], 401);
+        }
+            // generate Randome Token min of 10 and  characters
+        $token = rand(10,100000);
+
+        try{
+            DB::table('password_resets')->insert([
+                'email'=>$email,
+                'token'=>$token,
+            ]);
+            // sending mail to user
+            Mail::to($email)->send(new ForgetMail($token));
+            return response([
+                'message'=> 'Reset password Email sent to your mail'
+            ], 200);
+
+        }catch(Exception $exception){
+            return response([
+                'message'=>$exception->getMessage(),
+            ], 400);
+
+        }
+
+    }
+
+    public function resetpassword(ResetRequest $request){
+
+        $email = $request->email;
+        $token = $request->token;
+        $password = Hash::make($request->password);
+
+        // get email and token from the database
+        $emailcheck = DB::table('password_resets')->where('email',$email)->first();
+        $pincheck = DB::table('password_resets')->where('token',$token)->first();
+
+        // validate and check if they exits
+        if (!$emailcheck) {
+            return response([
+                'message' => "Email Not Found"
+            ],401);          
+         }
+         if (!$pincheck) {
+            return response([
+                'message' => "Pin Code Invalid"
+            ],401);          
+         }
+        //  update the password
+         DB::table('users')->where('email',$email)->update(['password' => $password]);
+         DB::table('password_resets')->where('email',$email)->delete();
+
+         return response([
+            'message' => 'Password Change Successfully'
+         ],200);
+    
     }
 }
