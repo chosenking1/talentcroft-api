@@ -238,7 +238,7 @@ class UserController extends Controller
 
     public function createAccount(Request $request){
         $request->validate([
-            'bank_code' =>'required|digits:10',
+            'account_number' =>'required|digits:10',
             'bank_name' =>'required',
             'account_name' =>'required',
         ],[
@@ -248,7 +248,7 @@ class UserController extends Controller
         try{
             AccountDetails::insert([
                 'user_id'=>$request->user_id,
-                'bank_code'=>$request->bank_code,
+                'account_number'=>$request->account_number,
                 'bank_name'=>$request->bank_name,
                 'account_name'=>$request->account_name,
                 'created_at'=>Carbon::now(),
