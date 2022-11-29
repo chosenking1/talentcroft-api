@@ -50,7 +50,7 @@ use Illuminate\Support\Facades\Route;
          Route::get('/allpost', [UserController::class, 'getAllPost']);
 
         //  delete a post
-        
+        Route::get('/deletepost/{id}', [UserController::class, 'deletePost']);
 
 
     });
