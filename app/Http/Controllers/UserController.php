@@ -270,4 +270,10 @@ class UserController extends Controller
         $account = AccountDetails::findorfail($id);
         return $this->respondWithSuccess(['data' => ['message' => 'Account details of user id '.$account->user_id.' is found', 'account' => $account]], 201);
     }
+
+    public function deleteAccountDetails($id){
+        $account_details = AccountDetails::findorfail($id);
+        $account = $account_details->delete();
+          return $this->respondWithSuccess(['data' => ['message' => 'Account details of user id '.$account_details->user_id.' has been deleted successfully', 'account' => $account]], 201);
+    }
 }

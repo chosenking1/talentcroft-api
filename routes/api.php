@@ -58,6 +58,9 @@ use Illuminate\Support\Facades\Route;
          //  get account
         Route::get('/getaccount/{id}', [UserController::class, 'getAccountDetails']);
 
+         //  delete account
+        Route::get('/deleteaccount/{id}', [UserController::class, 'deleteAccountDetails']);
+
 
     });
 
