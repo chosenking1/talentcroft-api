@@ -52,6 +52,9 @@ use Illuminate\Support\Facades\Route;
         //  delete a post
         Route::get('/deletepost/{id}', [UserController::class, 'deletePost']);
 
+        //  create account details
+        Route::post('/create/account', [UserController::class, 'createAccount']);
+
 
     });
 

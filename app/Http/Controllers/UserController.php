@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use App\Models\Post;
 use App\Models\User;
 use http\Env\Response;
+use App\Mail\ForgetMail;
 use Illuminate\Http\Request;
+use App\Models\AccountDetails;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\ForgetRequest;
 use App\Http\Requests\ResetRequest;
-use App\Mail\ForgetMail;
-use App\Models\Post;
+use App\Http\Requests\ForgetRequest;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -232,5 +234,33 @@ class UserController extends Controller
     public function deletePost($id){
         $onepost = Post::findorfail($id)->delete();
         return $this->respondWithSuccess(['data' => ['message' => 'Post deleted successfully', 'onepost' => $onepost]], 201);
+    }
+
+    public function createAccount(Request $request){
+        $request->validate([
+            'bank_code' =>'required',
+            'bank_name' =>'required',
+            'account_name' =>'required',
+        ]);
+
+        try{
+            AccountDetails::insert([
+                'user_id'=>$request->user_id,
+                'bank_code'=>$request->bank_code,
+                'bank_name'=>$request->bank_name,
+                'account_name'=>$request->account_name,
+                'created_at'=>Carbon::now(),
+            ]);
+            return response([
+                'message'=> 'Account details cretaed successfully'
+            ], 200);
+
+        }catch(Exception $exception){
+            return response([
+                'message'=>$exception->getMessage(),
+            ], 400);
+
+        }
+     
     }
 }
