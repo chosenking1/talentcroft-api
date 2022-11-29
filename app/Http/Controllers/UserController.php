@@ -254,7 +254,7 @@ class UserController extends Controller
                 'created_at'=>Carbon::now(),
             ]);
             return response([
-                'message'=> 'Account details cretaed successfully'
+                'message'=> 'Account details created successfully'
             ], 200);
 
         }catch(Exception $exception){
@@ -264,5 +264,10 @@ class UserController extends Controller
 
         }
      
+    }
+
+    public function getAccountDetails($id){
+        $account = AccountDetails::findorfail($id);
+        return $this->respondWithSuccess(['data' => ['message' => 'Account details of user id '.$account->user_id.' is found', 'account' => $account]], 201);
     }
 }

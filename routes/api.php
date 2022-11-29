@@ -55,6 +55,9 @@ use Illuminate\Support\Facades\Route;
         //  create account details
         Route::post('/create/account', [UserController::class, 'createAccount']);
 
+         //  get account
+        Route::get('/getaccount/{id}', [UserController::class, 'getAccountDetails']);
+
 
     });
 
