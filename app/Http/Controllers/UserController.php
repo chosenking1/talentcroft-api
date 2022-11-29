@@ -238,9 +238,11 @@ class UserController extends Controller
 
     public function createAccount(Request $request){
         $request->validate([
-            'bank_code' =>'required',
+            'bank_code' =>'required|digits:10',
             'bank_name' =>'required',
             'account_name' =>'required',
+        ],[
+            'bank_code.digits'=> 'Your account number must be 10 digits',
         ]);
 
         try{
