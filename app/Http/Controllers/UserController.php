@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ForgetRequest;
 use App\Http\Requests\ResetRequest;
 use App\Mail\ForgetMail;
+use App\Models\Post;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -221,5 +222,10 @@ class UserController extends Controller
             'message' => 'Password Change Successfully'
          ],200);
     
+    }
+
+    public function getAllPost(){
+         $post = Post::getpost();
+        return $this->respondWithSuccess(['data' => ['message' => 'All post made by users', 'post' => $post]], 201);
     }
 }

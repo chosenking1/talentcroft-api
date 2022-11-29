@@ -46,6 +46,12 @@ use Illuminate\Support\Facades\Route;
         // reset password
          Route::post('/resetpassword', [UserController::class, 'resetpassword']);
 
+        // find all post
+         Route::get('/allpost', [UserController::class, 'getAllPost']);
+
+        //  delete a post
+        
+
 
     });
 
