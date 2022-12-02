@@ -46,6 +46,21 @@ use Illuminate\Support\Facades\Route;
         // reset password
          Route::post('/resetpassword', [UserController::class, 'resetpassword']);
 
+        // find all post
+         Route::get('/allpost', [UserController::class, 'getAllPost']);
+
+        //  delete a post
+        Route::get('/deletepost/{id}', [UserController::class, 'deletePost']);
+
+        //  create account details
+        Route::post('/create/account', [UserController::class, 'createAccount']);
+
+         //  get account
+        Route::get('/getaccount/{id}', [UserController::class, 'getAccountDetails']);
+
+         //  delete account
+        Route::get('/deleteaccount/{id}', [UserController::class, 'deleteAccountDetails']);
+
 
     });
 
