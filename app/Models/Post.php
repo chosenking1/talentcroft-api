@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
@@ -25,7 +26,7 @@ class Post extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function sentiments()
@@ -47,5 +48,11 @@ class Post extends Model
     public function getDislikesAttribute()
     {
         return $this->sentiments()->dislikes()->count();
+    }
+
+       public static function getpost(){
+        //raw sql
+        $result = DB::select("SELECT * FROM posts");
+        return $result;
     }
 }

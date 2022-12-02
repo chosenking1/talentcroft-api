@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use App\Models\Post;
 use App\Models\User;
 use http\Env\Response;
+use App\Mail\ForgetMail;
 use Illuminate\Http\Request;
+use App\Models\AccountDetails;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\ForgetRequest;
 use App\Http\Requests\ResetRequest;
-use App\Mail\ForgetMail;
+use App\Http\Requests\ForgetRequest;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -221,5 +224,56 @@ class UserController extends Controller
             'message' => 'Password Change Successfully'
          ],200);
     
+    }
+
+    public function getAllPost(){
+         $post = Post::getpost();
+        return $this->respondWithSuccess(['data' => ['message' => 'All post made by users', 'post' => $post]], 201);
+    }
+
+    public function deletePost($id){
+        $onepost = Post::findorfail($id)->delete();
+        return $this->respondWithSuccess(['data' => ['message' => 'Post deleted successfully', 'onepost' => $onepost]], 201);
+    }
+
+    public function createAccount(Request $request){
+        $request->validate([
+            'account_number' =>'required|digits:10',
+            'bank_name' =>'required',
+            'account_name' =>'required',
+        ],[
+            'bank_code.digits'=> 'Your account number must be 10 digits',
+        ]);
+
+        try{
+            AccountDetails::insert([
+                'user_id'=>$request->user_id,
+                'account_number'=>$request->account_number,
+                'bank_name'=>$request->bank_name,
+                'account_name'=>$request->account_name,
+                'created_at'=>Carbon::now(),
+            ]);
+            return response([
+                'message'=> 'Account details created successfully'
+            ], 200);
+
+        }catch(Exception $exception){
+            return response([
+                'message'=>$exception->getMessage(),
+            ], 400);
+
+        }
+     
+    }
+
+    public function getAccountDetails($id){
+        $account = AccountDetails::findorfail($id);
+        return $this->respondWithSuccess(['data' => ['message' => 'Account details of user id '.$account->user_id.' is found', 'account' => $account]], 201);
+    }
+
+    public function deleteAccountDetails($id){
+        $account_details = AccountDetails::findorfail($id);
+        $account = $account_details->delete();
+          return $this->respondWithSuccess(['data' => ['message' => 'Account details of user id '.$account_details->user_id.' has been deleted successfully', 'account' => $account]], 201);
     }
 }
