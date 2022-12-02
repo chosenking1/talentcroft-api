@@ -35,19 +35,17 @@ use Illuminate\Support\Facades\Route;
         Route::group(['middleware' => 'auth:api'], function () {
             // get authenticated user
             Route::get('/profile/{id}', [UserController::class, 'getAuthenticatedUser']);
+            // update user credentials
+            Route::put('/update/{id}', [UserController::class, 'updateUser']);
             // delete user
-            Route::delete('/{id}', [UserController::class, 'getAuthenticatedUser']);
+            Route::delete('/{id}', [UserController::class, 'deleteUser']);
         });
-        // update user credentials
-        Route::put('/update/{id}', [UserController::class, 'updateUser']);
         //get all users
         Route::get('/allusers', [UserController::class,'getAllUsers']);
         //get a user
         Route::get('/{id}', [UserController::class,'getUser']);
-
         // forgetpassword
         Route::post('/forgetpassword', [UserController::class, 'forgetpassword']);
-
         // reset password
          Route::post('/resetpassword', [UserController::class, 'resetpassword']);
 
