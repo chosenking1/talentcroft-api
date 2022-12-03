@@ -14,7 +14,9 @@ class Post extends Model
 
     protected $primaryKey = 'id';
 
-    protected $guarded = [];
+    protected $fillable = ['user_id', 'description', 'url'];
+
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
 
     protected static function boot()
     {
@@ -26,7 +28,7 @@ class Post extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class);
     }
 
     public function sentiments()

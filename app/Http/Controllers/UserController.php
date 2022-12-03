@@ -214,10 +214,7 @@ class UserController extends Controller
     
     }
 
-    public function getAllPost(){
-         $post = Post::getpost();
-        return $this->respondWithSuccess(['data' => ['message' => 'All post made by users', 'post' => $post]], 201);
-    }
+
 
     public function deletePost($id){
         $onepost = Post::findorfail($id)->delete();
