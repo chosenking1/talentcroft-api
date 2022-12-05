@@ -101,18 +101,6 @@ class UserController extends Controller
         return $this->respondWithSuccess(['data' => ['user' => $this->prepareUserData($user)]], 201);
     }
 
-    // public function deleteUser($id)
-    // {
-    //    $user = User::whereEmail($id)->firstOrFail();
-    //    $user->events()->get()->each->delete();
-    //    $user->tips()->get()->each->delete();
-    //    $user->wishes()->get()->each->delete();
-    //    $user->delete();
-    //     $user = User::find($id);
-    //     $user -> delete();
-
-    //    return $this->respondWithSuccess(['data' => ['message' => 'Deleted successfully', 'user' => $this->repo->prepareUserData($user)]], 201);
-    // }
 
     final public function deleteUser($id)
     {
@@ -126,9 +114,9 @@ class UserController extends Controller
 
     public function updateUser(Request $request, $id){
         $request->validate([
-            'first_name' => 'required|min:2',
-            'last_name' => 'required|min:2',
-             'phone_number' => 'required|unique:users,phone_number',
+            'first_name' => 'nullable|min:2',
+            'last_name' => 'nullable|min:2',
+            'phone_number' => 'nullable|unique:users,phone_number',
             
         ]);
      
@@ -226,10 +214,7 @@ class UserController extends Controller
     
     }
 
-    public function getAllPost(){
-         $post = Post::getpost();
-        return $this->respondWithSuccess(['data' => ['message' => 'All post made by users', 'post' => $post]], 201);
-    }
+
 
     public function deletePost($id){
         $onepost = Post::findorfail($id)->delete();

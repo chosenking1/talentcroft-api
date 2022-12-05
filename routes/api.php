@@ -9,7 +9,8 @@ use App\Http\Controllers\{
     ProjectTicketController,
     ProjectDiscountController,
     ProjectDiscountUsagesController,
-    ApiController
+    ApiController,
+    PostController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -32,22 +33,22 @@ use Illuminate\Support\Facades\Route;
         Route::post('/login', [UserController::class, 'login']);
         // register
         Route::post('/register', [UserController::class, 'register']);
-        // update user credentials
-        Route::post('/update/{id}', [UserController::class, 'updateUser']);
-
+        Route::group(['middleware' => 'auth:api'], function () {
+            // get authenticated user
+            Route::get('/profile/{id}', [UserController::class, 'getAuthenticatedUser']);
+            // update user credentials
+            Route::put('/update/{id}', [UserController::class, 'updateUser']);
+            // delete user
+            Route::delete('/{id}', [UserController::class, 'deleteUser']);
+        });
         //get all users
         Route::get('/allusers', [UserController::class,'getAllUsers']);
         //get a user
         Route::get('/{id}', [UserController::class,'getUser']);
-
         // forgetpassword
         Route::post('/forgetpassword', [UserController::class, 'forgetpassword']);
-
         // reset password
          Route::post('/resetpassword', [UserController::class, 'resetpassword']);
-
-        // find all post
-         Route::get('/allpost', [UserController::class, 'getAllPost']);
 
         //  delete a post
         Route::get('/deletepost/{id}', [UserController::class, 'deletePost']);
@@ -63,6 +64,20 @@ use Illuminate\Support\Facades\Route;
 
 
     });
+   
+    Route::group(['prefix' => 'post'], function () {
+         // find all post
+        Route::get('/allpost', [PostController::class, 'getAllPost']);
+        // find one post
+        Route::get('/{id}', [PostController::class, 'show']);
+        // delete post
+        Route::delete('/{id}', [PostController::class, 'destroy']);
+        Route::group(['middleware' => 'auth:api'], function () {
+            Route::post('/', [PostController::class, 'createPost']);
+        });
+    });
+
+   
 
 
 
