@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Movie;
+use App\Models\MovieFile;
 use Exception;
 use App\Models\Post;
 use App\Models\User;
@@ -18,6 +20,7 @@ use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 
@@ -260,5 +263,104 @@ class UserController extends Controller
         $account_details = AccountDetails::findorfail($id);
         $account = $account_details->delete();
           return $this->respondWithSuccess(['data' => ['message' => 'Account details of user id '.$account_details->user_id.' has been deleted successfully', 'account' => $account]], 201);
+    }
+
+
+    public function movieUpload(Request $request)
+    {
+        $this->validate($request, [
+            'movieid'=>'required',
+            'title' => 'required|string|max:255',
+            'video' => 'required|file|mimetypes:video/mp4',
+        ]);
+        $video = new MovieFile();
+        $video->title = $request->title;
+        if ($request->hasFile('video'))
+        {
+            $path = $request->file('video')->store('videos', ['disk' =>      'my_files']);
+            $video->video = $path;
+        }
+        $video->save();
+
+    }
+
+    public function getMovie($id){
+        $movie = MovieFile::findOrFail($id);
+        return $this->respondWithSuccess(['data' => ['message' => 'Movie file '.$movie->movie_files_id.' is found', 'account' => $movie]], 201);
+
+    }
+
+
+    public function updateMovie(Request $request, MovieFile $id)
+    {
+        $request->validate([
+            'name' => 'required',
+            'decription' => 'required',
+            'thumbnail' => 'required',
+        ]);
+
+        $id->fill($request->post())->save();
+
+        return redirect()->route('companies.index')->with('success','Company Has Been updated successfully');
+    }
+
+    public function getAllMovies()
+    {
+        $movies = MovieFile::all();
+        return $this->respondWithSuccess(['data' => ['message' => 'Movie file '.$movies->movie_files_id.' is found', 'account' => $movies]], 201);
+
+    }
+
+    public function deleteMovie($id)
+    {
+        $movie = Movie::findorfail($id)->delete();
+        return $this->respondWithSuccess(['data' => ['message' => 'Movie deleted successfully', 'movie' => $movie]], 201);
+    }
+
+    public function randomMovie()
+    {
+        $movies = MovieFile::table('posts')
+            ->inRandomOrder()
+            ->limit(1)
+            ->get();
+        return $movies;
+    }
+
+    public function createPost(Request $request)
+    {
+        $user = $request->user();
+
+
+        $formData = $request->all();
+
+
+        $formData['url'] = Str::slug($request->get('description'));
+
+
+        $user->posts()->create($formData);
+
+        return "Post successfully saved";
+    }
+
+    public function getPost($id)
+    {
+        $post = Post::where('posts_id', $id)->first();
+
+        return $post;
+    }
+
+    public function updatePost(Request $request, Post $post)
+    {
+        $validated = $request->validate([
+            'user_id' => 'required|',
+            'description' => 'required|string|min:5|max:2000',
+
+        ]);
+
+        $validated['url'] = Str::slug($validated['description'], '-');
+
+        $post->update($validated);
+
+        return ('Successfully Updated');
     }
 }
