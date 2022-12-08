@@ -62,6 +62,34 @@ use Illuminate\Support\Facades\Route;
          //  delete account
         Route::get('/deleteaccount/{id}', [UserController::class, 'deleteAccountDetails']);
 
+         //Get Movie
+        Route::get('getamovie', [ UserController::class, 'getMovie' ]);
+
+        //Upload Movie
+        Route::post('uploadmovie', [ UserController::class, 'movieUpload' ]);
+
+        //Update movie
+        Route::post('/updatemovie/{id}', [UserController::class, 'updateMovie']);
+
+        //get all movies
+        Route::get('/allmovies', [UserController::class,'getAllMovies']);
+
+        //Delete a movie
+        Route::delete('/{id}', [UserController::class,'deleteMovie']);
+
+        //Getting a movie at random
+        Route::get('/getrandommovie', [UserController::class,'randomMovie']);
+
+        //creating a post
+        Route::post('/createpost', [UserController::class,'createPost']);
+
+        //Getting a post
+        Route::get('/getpost', [UserController::class,'getPost']);
+
+        //updating a post
+        Route::post('/updatepost/{id}', [UserController::class,'updatePost']);
+
+
 
     });
    
