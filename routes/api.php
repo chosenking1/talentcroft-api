@@ -10,6 +10,7 @@ use App\Http\Controllers\{
     ProjectDiscountController,
     ProjectDiscountUsagesController,
     ApiController,
+    MovieListController,
     PostController
 };
 use Illuminate\Support\Facades\Route;
@@ -102,6 +103,12 @@ use Illuminate\Support\Facades\Route;
         Route::delete('/{id}', [PostController::class, 'destroy']);
         Route::group(['middleware' => 'auth:api'], function () {
             Route::post('/', [PostController::class, 'createPost']);
+        });
+    });
+
+    Route::group(['prefix'=>'movielist'], function(){
+        Route::controller(MovieListController::class)->group(function(){
+            Route::post('/update/{id}', 'updatemovielist');
         });
     });
 
