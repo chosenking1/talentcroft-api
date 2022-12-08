@@ -26,4 +26,9 @@ class MovieListController extends Controller
         return $this->respondWithSuccess(['data' => ['message' => 'All Movielist ', 'movielist' =>   $movielist]], 201);
 
     }
+
+    public function deletemovielist($id){
+       $deletemovielist= Movie_List::findorfail($id)->delete();
+        return $this->respondWithSuccess(['data' => ['message' => 'Movielist deleted successfully ', 'deletemovielist' =>   $deletemovielist]], 201);
+    }
 }

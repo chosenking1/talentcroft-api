@@ -110,6 +110,7 @@ use Illuminate\Support\Facades\Route;
         Route::controller(MovieListController::class)->group(function(){
             Route::get('/allmovielist', 'getallmovielist');
             Route::post('/update/{id}', 'updatemovielist');
+            Route::get('/delete/{id}', 'deletemovielist');
         });
     });
 
