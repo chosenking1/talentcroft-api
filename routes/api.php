@@ -108,6 +108,7 @@ use Illuminate\Support\Facades\Route;
 
     Route::group(['prefix'=>'movielist'], function(){
         Route::controller(MovieListController::class)->group(function(){
+            Route::get('/allmovielist', 'getallmovielist');
             Route::post('/update/{id}', 'updatemovielist');
         });
     });

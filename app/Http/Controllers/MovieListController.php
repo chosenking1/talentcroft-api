@@ -20,4 +20,10 @@ class MovieListController extends Controller
 
         return $this->respondWithSuccess(['data' => ['message' => 'Movie list updated successfully', 'movielist' =>   $movielist]], 201);
     }
+
+    public function getallmovielist(){
+        $movielist = Movie_List::latest()->get();
+        return $this->respondWithSuccess(['data' => ['message' => 'All Movielist ', 'movielist' =>   $movielist]], 201);
+
+    }
 }
