@@ -114,6 +114,11 @@ use Illuminate\Support\Facades\Route;
         });
     });
 
+    Route::group(['prefix'=>'movie'], function(){
+        Route::post('/upload', 'uploadmovie');
+        Route::get('/destroy/{id}', 'destroy');
+    });
+
 
 
 
