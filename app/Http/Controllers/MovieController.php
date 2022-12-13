@@ -11,36 +11,22 @@ class MovieController extends Controller
 {
     public function uploadmovie(Request $request){
         $request->validate([
-            'movie_id'=> 'required',
             'url'=> 'mimetypes:video/avi,video/mpeg,video/quicktime,video/mp4,|required|max:102400',
-            // 'size'=>'required|max:102400'
-            // 'duration'=>'required',
+        //  validate other fields
         ]);
 
         // a folder movies_folder will be created inside the s3 bucket that we will specify in the .env file
          $base_location = 'movies_folder';
-
         // Handle File Upload
-        if($request->hasFile('movies')) {                       
-            $moviePath = $request->file('movies')->store($base_location, 's3');
+        if($request->hasFile('url')) {                       
+            $moviePath = $request->file('url')->store($base_location, 's3');
+            return response()->json(['success' => true, 'message' => 'Movies successfully uploaded', 'moviePath' =>$moviePath], 200);
           
         } else {
             return response()->json(['success' => false, 'message' => 'No file uploaded'], 400);
         }
-    
-        //We save new path
-        $movies = new MovieFile();
-        $movies->movie_id = $request->movie_id;
-        $movies->url = $moviePath;
-        $movies->thumbnail = $moviePath;
-        $movies->size = $request->size;
-        $movies->duration = $request->duration;
-        $movies->meta = $request->meta;
-        $movies->processed_at = Carbon::now();
-    
-        $movies->save();
-       
-        return response()->json(['success' => true, 'message' => 'Movies successfully uploaded', 'movies' =>$movies], 200);
+   
+
     }
 
      public function destroy($id)

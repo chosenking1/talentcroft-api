@@ -10,6 +10,7 @@ use App\Http\Controllers\{
     ProjectDiscountController,
     ProjectDiscountUsagesController,
     ApiController,
+    MovieController,
     MovieListController,
     PostController
 };
@@ -115,8 +116,10 @@ use Illuminate\Support\Facades\Route;
     });
 
     Route::group(['prefix'=>'movie'], function(){
-        Route::post('/upload', 'uploadmovie');
-        Route::get('/destroy/{id}', 'destroy');
+        Route::controller(MovieController::class)->group(function(){
+            Route::post('/upload', 'uploadmovie');
+            Route::get('/destroy/{id}', 'destroy');
+        });
     });
 
 
