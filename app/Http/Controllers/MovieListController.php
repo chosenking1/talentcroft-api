@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Movie_List;
+use App\Models\MovieList;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class MovieListController extends Controller
 {
-    public function updatemovielist(Request $request, $id){
-        $movielist = Movie_List::findorfail($id)->update([
+    public function updateMovieList(Request $request, $id){
+        $movielist = MovieList::findorfail($id)->update([
             'title' =>$request->title,
             'description' =>$request->description,
             'type'=>$request->type,
@@ -21,14 +21,14 @@ class MovieListController extends Controller
         return $this->respondWithSuccess(['data' => ['message' => 'Movie list updated successfully', 'movielist' =>   $movielist]], 201);
     }
 
-    public function getallmovielist(){
-        $movielist = Movie_List::latest()->get();
+    public function getAllMovieList(){
+        $movielist = MovieList::latest()->get();
         return $this->respondWithSuccess(['data' => ['message' => 'All Movielist ', 'movielist' =>   $movielist]], 201);
 
     }
 
-    public function deletemovielist($id){
-       $deletemovielist= Movie_List::findorfail($id)->delete();
+    public function deleteMovieList($id){
+       $deletemovielist= MovieList::findorfail($id)->delete();
         return $this->respondWithSuccess(['data' => ['message' => 'Movielist deleted successfully ', 'deletemovielist' =>   $deletemovielist]], 201);
     }
 }

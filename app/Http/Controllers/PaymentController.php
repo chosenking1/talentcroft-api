@@ -35,8 +35,6 @@ class PaymentController extends Controller
         ]);
 
         if ($payment->amount != 0) {
-            // $payment->paid_at = now();
-            // $payment->status = 'Success';
             $payment->save();
             $data['open'] = 'paid';
             $data['message'] = 'You have successfully purchased talentcroft package';
@@ -92,7 +90,6 @@ class PaymentController extends Controller
 //            $amount = $data['amount'];
             $reference = $data['reference'];
 //            $paidAmount = $amount / 100;
-
             $transaction = Payment::whereReference_id($reference)->firstOrFail();
             $transaction->paid_at = now();
             $transaction->status = "Success";

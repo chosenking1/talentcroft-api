@@ -17,7 +17,7 @@ class MovieFile extends Model
 
     protected $casts = ['thumbnails' => 'array'];
 
-    public function project()
+    public function movie()
     {
         return $this->belongsTo(Movie::class);
     }

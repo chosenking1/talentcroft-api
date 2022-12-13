@@ -22,9 +22,13 @@ class Movie extends Model
 
     public function files()
     {
-        return $this->hasMany(MovieFile::class);
+        return $this->hasOne(MovieFile::class);
     }
 
+    public function episodes()
+    {
+        return $this->hasMany(MovieFile::class);
+    }
 
     protected $casts = ['tags' => 'array'];
 }

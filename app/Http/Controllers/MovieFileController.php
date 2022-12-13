@@ -2,22 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\MovieRequest;
-use App\Http\Resources\MovieResource;
-use App\Models\Movie;
 use App\Models\MovieFile;
-use App\Repositories\MovieRepository;
 use Carbon\Carbon;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class MovieController extends Controller
+class MovieFileController extends Controller
 {
     public function uploadmovie(Request $request){
         $request->validate([
-            'movie_id'=> 'required',
-            'url'=> 'mimetypes:video/avi,video/mpeg,video/quicktime,video/mp4,|required|max:102400',
+            // 'movie_id'=> 'required',
+            // 'url'=> 'mimetypes:video/avi,video/mpeg,video/quicktime,video/mp4,|required|max:102400',
             // 'size'=>'required|max:102400'
             // 'duration'=>'required',
         ]);
@@ -48,27 +43,21 @@ class MovieController extends Controller
         return response()->json(['success' => true, 'message' => 'Movies successfully uploaded', 'movies' =>$movies], 200);
     }
 
-    final public function index(Request $request)
+     public function destroy($id)
     {
-        $movies = Movie::latest()->searchable();
-        $data = MovieResource::collection($movies->items());
-        return $this->respondWithSuccess(array_merge($movies->toArray(), ['data' => $data]));
+        $movie = MovieFile::findorfail($id);
+
+        if(empty($movie)){
+            return response()->json(['success' => false, 'message' => 'Movie not found'], 404);
+        }
+
+        //We remove existing movie
+        if(!empty($movie)){
+            Storage::disk('s3')->delete($movie->path);
+            $movie->delete();
+            return response()->json(['success' => true, 'message' => 'Movie deleted'], 200);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Unable to delete movie. Please try again later.'], 400);
     }
-
-    final public function update(Request $request, Movie $movie)
-    {
-        $movie->update($request->all());
-        return $this->respondWithSuccess(['data' => [
-            'movie' => $this->movieRepository->parse($movie),
-            "message" => "Successfully updated " . $movie->name]], 201);
-    }
-
-    final public function destroy($id)
-    {
-        $movie = Movie::destroy($id);
-        return $this->respondWithSuccess('Deleted Successfully', 201);
-    }
-
-
-    
 }
