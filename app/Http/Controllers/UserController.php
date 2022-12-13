@@ -82,7 +82,7 @@ class UserController extends Controller
         $user = DB::transaction(function () use ($request) {
             $data = $request->all();
             $data['password'] = Hash::make($request->password);
-            // $data['avatar'] = textToImage(text: 'No avatar', bg: randomColorCode());
+            $data['avatar'] = textToImage(text: 'No avatar', bg: randomColorCode());
             $user = User::create($data);
             return $user;
         });

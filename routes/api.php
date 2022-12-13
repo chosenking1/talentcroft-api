@@ -6,12 +6,10 @@ use App\Http\Controllers\{
     PaymentController,
     ProjectController,
     SettingsController,
-    ProjectFileController,
-    ProjectTicketController,
-    ProjectDiscountController,
-    ProjectDiscountUsagesController,
     ApiController,
+    MovieFileController,
     MovieListController,
+    MovieController,
     PostController
 };
 use Illuminate\Support\Facades\Route;
@@ -67,15 +65,6 @@ use Illuminate\Support\Facades\Route;
          //Get Movie
         Route::get('getamovie', [ UserController::class, 'getMovie' ]);
 
-        //Upload Movie
-        Route::post('uploadmovie', [ UserController::class, 'movieUpload' ]);
-
-        //Update movie
-        Route::post('/updatemovie/{id}', [UserController::class, 'updateMovie']);
-
-        //get all movies
-        Route::get('/allmovies', [UserController::class,'getAllMovies']);
-
         //Delete a movie
         Route::delete('/{id}', [UserController::class,'deleteMovie']);
 
@@ -117,15 +106,27 @@ use Illuminate\Support\Facades\Route;
     });
 
     Route::group(['prefix'=>'movie'], function(){
-        Route::post('/upload', 'uploadmovie');
-        Route::get('/destroy/{id}', 'destroy');
+        Route::group(['middleware' => 'auth:api'], function () {
+            // get all movies
+            Route::get('/allmovies', [MovieController::class,'index']);
+            // create movie
+            Route::post('/create', [MovieController::class,'create']);
+            // delete movie
+            Route::delete('/{id}', [MovieController::class,'destroy']);
+        });
+    });
+
+    Route::group(['prefix' => 'moviefile'], function () {
+        Route::group(['middleware' => 'auth:api'], function () {
+            Route::post('/{movie:id}', [MovieFileController::class, 'uploadmovie']);
+        });
     });
 
 
-    // Route::group(['middleware' => 'auth:api'], function () {
+    Route::group(['middleware' => 'auth:api'], function () {
           // make payment
           Route::post('/make-payment', [PaymentController::class, 'makePayment'])->name('make-payment');
-    // });
+    });
 
 
 

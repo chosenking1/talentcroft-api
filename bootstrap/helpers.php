@@ -94,3 +94,13 @@ function showSearchHighlight($text)
  * @param mixed $data
  */
 
+ function textToImage($text, $w = 640, $h = 640, $bg = "7618FF", $color = "fff"): string
+{
+    return "https://fakeimg.pl/{$w}x{$h}/{$bg}/{$color}?text={$text}";
+}
+
+function randomColorCode(): string
+{
+    return substr(md5(rand()), 0, 6);
+}
+
