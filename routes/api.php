@@ -3,6 +3,7 @@ header('Accept: application/json', true);
 
 use App\Http\Controllers\{
     UserController,
+    PaymentController,
     ProjectController,
     SettingsController,
     ProjectFileController,
@@ -106,6 +107,7 @@ use Illuminate\Support\Facades\Route;
         });
     });
 
+
     Route::group(['prefix'=>'movielist'], function(){
         Route::controller(MovieListController::class)->group(function(){
             Route::get('/allmovielist', 'getallmovielist');
@@ -118,6 +120,12 @@ use Illuminate\Support\Facades\Route;
         Route::post('/upload', 'uploadmovie');
         Route::get('/destroy/{id}', 'destroy');
     });
+
+
+    // Route::group(['middleware' => 'auth:api'], function () {
+          // make payment
+          Route::post('/make-payment', [PaymentController::class, 'makePayment'])->name('make-payment');
+    // });
 
 
 
