@@ -81,11 +81,13 @@ class PaystackService
     {
         $user = getUser();
         $body = [
-            'reference' => $this::getHashedToken(),
-            "amount" => 5000,
+            'reference' => $this->reference,
+            "amount" => $this->amount,
             "email" => $user->email,
-            'callback_url' => url('/api/payment/verify'),
+            'callback_url' => url('/payment/paystack/callback'),
         ];
+        $body['metadata'] =  $this->metadata;
+        $body['order_id'] =  $this->orderId;
         return (object)$this->makeRequest('/transaction/initialize', 'post', $body);
     }
 
@@ -182,15 +184,15 @@ class PaystackService
         return json_decode($response->getBody(), true);
     }
 
-    public function initializePayment($body = [])
+    public function initializePayment($body = [], $data)
     {
-        $user = getUser();
-        $body['reference'] = $this::getHashedToken();
-        $body['callback_url'] = route('payment.callback');
+        // $user = getUser();
+        $body['reference'] = $data->reference_id;
+        // $body['callback_url'] = route('payment.callback');
         $body['amount'] = $body['amount'] ?? $this->amount;
         $body['metadata'] = $body['metadata'] ?? $this->metadata;
         $body['order_id'] = $body['order_id'] ?? $this->orderId;
-        $body['email'] = $user->email;
+        $body['email'] = $data->email;
         $response = $this->makeRequest('/transaction/initialize', 'post', $body);
         $url = $response['data']['authorization_url'];
         return redirect($url);

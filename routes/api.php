@@ -3,6 +3,7 @@ header('Accept: application/json', true);
 
 use App\Http\Controllers\{
     UserController,
+    PaymentController,
     ProjectController,
     SettingsController,
     ProjectFileController,
@@ -105,7 +106,10 @@ use Illuminate\Support\Facades\Route;
         });
     });
 
-   
+    // Route::group(['middleware' => 'auth:api'], function () {
+          // Laravel 8 & 9
+          Route::post('/make-payment', [PaymentController::class, 'makePayment'])->name('make-payment');
+    // });
 
 
 
