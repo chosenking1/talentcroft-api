@@ -15,5 +15,9 @@ class Movie_List extends Model
 
     protected $guarded = [];
 
+      protected $casts = [
+        'content' => 'array'
+    ];
+
 
 }

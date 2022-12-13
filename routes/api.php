@@ -11,6 +11,7 @@ use App\Http\Controllers\{
     ProjectDiscountController,
     ProjectDiscountUsagesController,
     ApiController,
+    MovieListController,
     PostController
 };
 use Illuminate\Support\Facades\Route;
@@ -106,10 +107,26 @@ use Illuminate\Support\Facades\Route;
         });
     });
 
+
+    Route::group(['prefix'=>'movielist'], function(){
+        Route::controller(MovieListController::class)->group(function(){
+            Route::get('/allmovielist', 'getallmovielist');
+            Route::post('/update/{id}', 'updatemovielist');
+            Route::get('/delete/{id}', 'deletemovielist');
+        });
+    });
+
+    Route::group(['prefix'=>'movie'], function(){
+        Route::post('/upload', 'uploadmovie');
+        Route::get('/destroy/{id}', 'destroy');
+    });
+
+
     // Route::group(['middleware' => 'auth:api'], function () {
-          // Laravel 8 & 9
+          // make payment
           Route::post('/make-payment', [PaymentController::class, 'makePayment'])->name('make-payment');
     // });
+
 
 
 

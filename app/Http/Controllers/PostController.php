@@ -35,7 +35,8 @@ class PostController extends Controller
         $file = $request->url;
         $post_id = $post->id;
         $url = $file->storeAs($user_id,  "$post_id.{$file->extension()}" , 'posts'); 
-        return $this->respondWithSuccess(['posts' => ["id" => $post_id, "user_id" => $user_id, "description" => $post->description, "url" => url($url), "message" => "Successfully created " . $post->id]], 201);
+        return $this->respondWithSuccess([
+            'posts' => ["id" => $post_id, "user_id" => $user_id, "description" => $post->description, "url" => url($url), "message" => "Successfully created " . $post->id]], 201);
     }
 
     final public function destroy($id)

@@ -61,6 +61,12 @@ return [
             'url' => env('APP_URL') . '/posts',
             'visibility' => 'public',
         ],
+        'movies' => [
+            'driver' => 'local',
+            'root' => storage_path('movies'),
+            'url' => env('APP_URL') . '/movies',
+            'visibility' => 'public',
+        ],
 
         's3' => [
             'driver' => 's3',
@@ -70,6 +76,7 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
+            'visibility' => 'public',
         ],
 
     ],
