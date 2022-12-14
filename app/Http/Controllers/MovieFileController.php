@@ -12,7 +12,7 @@ class MovieFileController extends Controller
     public function uploadmovie(Request $request){
         $request->validate([
             // 'movie_id'=> 'required',
-            // 'url'=> 'mimetypes:video/avi,video/mpeg,video/quicktime,video/mp4,|required|max:102400',
+            'url'=> 'mimetypes:video/avi,video/mpeg,video/quicktime,video/mp4,|required|max:102400',
             // 'size'=>'required|max:102400'
             // 'duration'=>'required',
         ]);
