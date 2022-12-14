@@ -7,7 +7,6 @@ use App\Http\Controllers\{
     ProjectController,
     SettingsController,
     ApiController,
-    MovieFileController,
     MovieListController,
     MovieController,
     PostController
@@ -105,6 +104,13 @@ use Illuminate\Support\Facades\Route;
         });
     });
 
+    // Route::group(['prefix'=>'movie'], function(){
+        
+    //     Route::post('/upload',[MovieController::class, 'uploadmovie']);
+    //     Route::get('/destroy/{id}', [MovieController::class, 'destroy']);
+    // });
+
+
     Route::group(['prefix'=>'movie'], function(){
         Route::group(['middleware' => 'auth:api'], function () {
             // get all movies
@@ -115,13 +121,6 @@ use Illuminate\Support\Facades\Route;
             Route::delete('/{id}', [MovieController::class,'destroy']);
         });
     });
-
-    Route::group(['prefix' => 'moviefile'], function () {
-        Route::group(['middleware' => 'auth:api'], function () {
-            Route::post('/{movie:id}', [MovieFileController::class, 'uploadmovie']);
-        });
-    });
-
 
     Route::group(['middleware' => 'auth:api'], function () {
           // make payment
