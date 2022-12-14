@@ -33,7 +33,6 @@ class MovieResource extends JsonResource
 
         $extraData = [
             "thumbnail" => $thumbnail,
-            // "purchased_by_me" => false,
             "views" => $this->views ? $this->views->count() : 0,
             "video" => $previewLink,
             "episodes_count" => $this->episodes->count(),
