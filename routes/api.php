@@ -111,8 +111,14 @@ use Illuminate\Support\Facades\Route;
             Route::get('/allmovies', [MovieController::class,'index']);
             // create movie
             Route::post('/create', [MovieController::class,'create']);
+
+            // upload to amazon movie
+            Route::post('/store', [MovieController::class,'store']);
+
             // delete movie
             Route::delete('/{id}', [MovieController::class,'destroy']);
+            // delete movie
+            Route::delete('/delete/{id}', [MovieController::class,'delete']);
         });
     });
 
