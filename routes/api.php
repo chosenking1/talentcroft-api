@@ -104,12 +104,6 @@ use Illuminate\Support\Facades\Route;
         });
     });
 
-    // Route::group(['prefix'=>'movie'], function(){
-        
-    //     Route::post('/upload',[MovieController::class, 'uploadmovie']);
-    //     Route::get('/destroy/{id}', [MovieController::class, 'destroy']);
-    // });
-
 
     Route::group(['prefix'=>'movie'], function(){
         Route::group(['middleware' => 'auth:api'], function () {
