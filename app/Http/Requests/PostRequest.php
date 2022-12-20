@@ -25,7 +25,7 @@ class PostRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required',
+            // 'user_id' => 'required',
             'description' => ['required', 'string'],
             'url' => 'mimetypes:video/avi,video/mpeg,video/quicktime,video/mp4,|required|max:102400',
         ];

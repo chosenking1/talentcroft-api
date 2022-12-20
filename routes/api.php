@@ -9,6 +9,7 @@ use App\Http\Controllers\{
     ApiController,
     MovieListController,
     MovieController,
+    MovieFileController,
     PostController
 };
 use Illuminate\Support\Facades\Route;
@@ -119,6 +120,13 @@ use Illuminate\Support\Facades\Route;
             Route::delete('/{id}', [MovieController::class,'destroy']);
             // delete movie
             Route::delete('/delete/{id}', [MovieController::class,'delete']);
+        });
+    });
+
+    Route::group(['prefix'=>'moviefile'], function(){
+        Route::group(['middleware' => 'auth:api'], function () {
+           // upload moviefile
+           Route::post('/{movie:id}', [MovieFileController::class,'uploadmovie']); 
         });
     });
 

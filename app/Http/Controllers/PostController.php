@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +23,7 @@ class PostController extends Controller
         return $this->respondWithSuccess(['data' => ['post' => $post]], 201);
     }
 
-    public function createPost(PostRequest $request): JsonResponse
+    public function createPost(PostRequest $request, User $user): JsonResponse
     {
         
 
@@ -31,12 +32,15 @@ class PostController extends Controller
         $post = getUser()->posts()->create($data);
 
         // url file
-        $user_id= $request->user_id;
+        $user_id = $post->user_id;
+        $post_location = "posts";
+        $aws = env('AWS_ROUTE');
         $file = $request->url;
         $post_id = $post->id;
-        $url = $file->storeAs($user_id,  "$post_id.{$file->extension()}" , 'posts'); 
+        $url = $request->file('url')->store($post_location,'s3');
+        // $url = $file->storeAs($user_id,  "$post_id.{$file->extension()}" , 's3'); 
         return $this->respondWithSuccess([
-            'posts' => ["id" => $post_id, "user_id" => $user_id, "description" => $post->description, "url" => url($url), "message" => "Successfully created " . $post->id]], 201);
+            'posts' => ["id" => $post_id, "user_id" => $user_id, "description" => $post->description, "url" => "$aws/$url", "message" => "Successfully created " . $post->id]], 201);
     }
 
     final public function destroy($id)

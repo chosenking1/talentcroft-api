@@ -61,6 +61,10 @@ return [
             'url' => env('APP_URL') . '/posts',
             'visibility' => 'public',
         ],
+        'processing' => [
+            'driver' => 'local',
+            'root' => storage_path('processing'),
+        ],
         'movies' => [
             'driver' => 'local',
             'root' => storage_path('movies'),
