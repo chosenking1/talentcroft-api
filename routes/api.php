@@ -1,5 +1,8 @@
 <?php
 header('Accept: application/json', true);
+header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Authorization, Accept,charset,boundary,Content-Length');
+header('Access-Control-Allow-Credentials: true');
 
 use App\Http\Controllers\{
     UserController,
@@ -83,8 +86,15 @@ use Illuminate\Support\Facades\Route;
 
 
     });
+    // Route::group([
+    //     'middleware' => ['api', 'cors'],
+    //     'prefix' => 'post',
+    // ], function ($router) {
+    //      //Add you routes here, for example:
+    //         Route::get('/allpost', [PostController::class, 'getAllPost']);
+    // });
    
-    Route::group(['prefix' => 'post'], function () {
+    Route::group(['middleware' => ['api', 'cors'], 'prefix' => 'post'], function () {
          // find all post
         Route::get('/allpost', [PostController::class, 'getAllPost']);
         // find one post
@@ -106,8 +116,8 @@ use Illuminate\Support\Facades\Route;
     });
 
 
-    Route::group(['prefix'=>'movie'], function(){
-        Route::group(['middleware' => 'auth:api'], function () {
+    Route::group(['middleware' => ['api', 'cors'], 'prefix'=>'movie'], function(){
+        // Route::group(['middleware' => 'auth:api'], function () {
             // get all movies
             Route::get('/allmovies', [MovieController::class,'index']);
             // create movie
@@ -120,8 +130,9 @@ use Illuminate\Support\Facades\Route;
             Route::delete('/{id}', [MovieController::class,'destroy']);
             // delete movie
             Route::delete('/delete/{id}', [MovieController::class,'delete']);
-        });
+        // });
     });
+
 
     Route::group(['prefix'=>'moviefile'], function(){
         Route::group(['middleware' => 'auth:api'], function () {
