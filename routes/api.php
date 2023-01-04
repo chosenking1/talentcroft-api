@@ -53,8 +53,6 @@ use Illuminate\Support\Facades\Route;
         // reset password
          Route::post('/resetpassword', [UserController::class, 'resetpassword']);
 
-        //  delete a post
-        Route::get('/deletepost/{id}', [UserController::class, 'deletePost']);
 
         //  create account details
         Route::post('/create/account', [UserController::class, 'createAccount']);
@@ -86,13 +84,6 @@ use Illuminate\Support\Facades\Route;
 
 
     });
-    // Route::group([
-    //     'middleware' => ['api', 'cors'],
-    //     'prefix' => 'post',
-    // ], function ($router) {
-    //      //Add you routes here, for example:
-    //         Route::get('/allpost', [PostController::class, 'getAllPost']);
-    // });
    
     Route::group(['middleware' => ['api', 'cors'], 'prefix' => 'post'], function () {
          // find all post
