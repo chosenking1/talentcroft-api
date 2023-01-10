@@ -13,8 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('account_details', function (Blueprint $table) {
-             $table->renameColumn('bank_code', 'account_number');
+        Schema::table('movie_lists', function (Blueprint $table) {
+            $table->string('age_rating');
+            $table->text('director');
+            $table->string('year');
         });
     }
 
@@ -25,8 +27,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('account_details', function (Blueprint $table) {
-        
+        Schema::table('movie_lists', function (Blueprint $table) {
+            //
         });
     }
 };

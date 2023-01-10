@@ -117,7 +117,7 @@ use Illuminate\Support\Facades\Route;
 
 
     Route::group(['prefix'=>'movie'], function(){
-        Route::group(['middleware' => 'auth:api'], function () {
+        // Route::group(['middleware' => 'auth:api'], function () {
             // get all movies
             Route::get('/allmovies', [MovieController::class,'index']);
             // create movie
@@ -130,7 +130,7 @@ use Illuminate\Support\Facades\Route;
             Route::delete('/{id}', [MovieController::class,'destroy']);
             // delete movie
             Route::delete('/delete/{id}', [MovieController::class,'delete']);
-        });
+        // });
     });
 
 
