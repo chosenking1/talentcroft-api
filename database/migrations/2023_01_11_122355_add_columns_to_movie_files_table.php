@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('movie_lists', function (Blueprint $table) {
+        Schema::table('movie_files', function (Blueprint $table) {
             $table->string('age_rating');
             $table->text('director');
             $table->string('year');
@@ -27,7 +27,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('movie_lists', function (Blueprint $table) {
+        Schema::table('movie_files', function (Blueprint $table) {
             //
         });
     }
