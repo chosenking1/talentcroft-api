@@ -107,7 +107,7 @@ use Illuminate\Support\Facades\Route;
     });
 
 
-    Route::group(['middleware' => ['api', 'cors'], 'prefix'=>'movie'], function(){
+    Route::group(['prefix'=>'movie'], function(){
         // Route::group(['middleware' => 'auth:api'], function () {
             // get all movies
             Route::get('/allmovies', [MovieController::class,'index']);

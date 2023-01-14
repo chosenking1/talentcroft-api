@@ -81,6 +81,9 @@ class MovieController extends Controller
         $movie_files->size = $request->size;
         $movie_files->duration = $request->duration;
         $movie_files->meta = $request->meta;
+        $movie_files->year = $request->year;
+        $movie_files->director = $request->director;
+        $movie_files->age_rating = $request->age_rating;
         $movie_files->processed_at = Carbon::now();
         $movie_files->save();
 

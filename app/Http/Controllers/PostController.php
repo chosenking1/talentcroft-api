@@ -48,6 +48,7 @@ class PostController extends Controller
 
         $data = $request->validated();
         // create Post
+        
         $post = getUser()->posts()->create($data);
 
         // url file
