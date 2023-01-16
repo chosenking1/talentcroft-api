@@ -40,7 +40,6 @@ class UserController extends Controller
         $this->validateData(['email' => 'required|email', 'password' => 'required']);
 
         $user = User::query()->where('email', $request->email)->first();
-
         if (!$user)
             return $this->respondWithError('Account not found');
 
@@ -49,6 +48,7 @@ class UserController extends Controller
 
         $token = $user->createToken($this->api_key)->accessToken;
         return $this->respondWithSuccess(['data' => ['token' => $token, 'user' => $this->prepareUserData($user)]], 201);
+
     }
 
     /**
