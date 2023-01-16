@@ -78,6 +78,7 @@ class PaymentController extends Controller
      */
     public function handleGatewayCallback()
     {
+<<<<<<< HEAD
         $payment = Paystack::getPaymentData();
         dd($payment);
         // $paystack = (new PaystackService())->verifyPayment();
@@ -90,6 +91,20 @@ class PaymentController extends Controller
 //            $meta = $data['metadata'];
 //            $metaReference = $meta['reference'];
 //            $amount = $data['amount'];
+=======
+       $payment = Paystack::getPaymentData();
+        dd($payment);
+//         $paystack = (new PaystackService())->verifyPayment();
+//         $status = 'unknown';
+//         $message = $paystack['data']['message'];
+//         if ($paystack['data']) {
+//             $data = $paystack['data'];
+//             $status = $data['status'];
+
+// //            $meta = $data['metadata'];
+// //            $metaReference = $meta['reference'];
+// //            $amount = $data['amount'];
+>>>>>>> 99596c6c111d89b1916d76173b5543f5cadc3282
 //             $reference = $data['reference'];
 // //            $paidAmount = $amount / 100;
 //             $transaction = Payment::whereReference_id($reference)->firstOrFail();

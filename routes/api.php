@@ -108,11 +108,13 @@ use Illuminate\Support\Facades\Route;
 
 
     Route::group(['prefix'=>'movie'], function(){
-        // Route::group(['middleware' => 'auth:api'], function () {
+        Route::group(['middleware' => 'auth:api'], function () {
             // get all movies
             Route::get('/allmovies', [MovieController::class,'index']);
             // create movie
             Route::post('/create', [MovieController::class,'create']);
+            // find movie
+            Route::get('/{id}', [MovieController::class,'show']); 
 
             // upload to amazon movie
             Route::post('/store', [MovieController::class,'store']);
@@ -121,7 +123,7 @@ use Illuminate\Support\Facades\Route;
             Route::delete('/{id}', [MovieController::class,'destroy']);
             // delete movie
             Route::delete('/delete/{id}', [MovieController::class,'delete']);
-        // });
+        });
     });
 
 
@@ -129,6 +131,9 @@ use Illuminate\Support\Facades\Route;
         Route::group(['middleware' => 'auth:api'], function () {
            // upload moviefile
            Route::post('/{movie:id}', [MovieFileController::class,'uploadmovie']); 
+           Route::get('/{id}', [MovieFileController::class,'show']); 
+           Route::delete('/{id}', [MovieFileController::class,'destroy']); 
+           Route::get('/', [MovieFileController::class,'getAllFiles']); 
         });
     });
 
