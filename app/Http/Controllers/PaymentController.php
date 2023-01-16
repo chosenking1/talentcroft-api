@@ -78,24 +78,26 @@ class PaymentController extends Controller
      */
     public function handleGatewayCallback()
     {
-        $paystack = (new PaystackService())->verifyPayment();
-        $status = 'unknown';
-        $message = $paystack['data']['message'];
-        if ($paystack['data']) {
-            $data = $paystack['data'];
-            $status = $data['status'];
+       $payment = Paystack::getPaymentData();
+        dd($payment);
+//         $paystack = (new PaystackService())->verifyPayment();
+//         $status = 'unknown';
+//         $message = $paystack['data']['message'];
+//         if ($paystack['data']) {
+//             $data = $paystack['data'];
+//             $status = $data['status'];
 
-//            $meta = $data['metadata'];
-//            $metaReference = $meta['reference'];
-//            $amount = $data['amount'];
-            $reference = $data['reference'];
-//            $paidAmount = $amount / 100;
-            $transaction = Payment::whereReference_id($reference)->firstOrFail();
-            $transaction->paid_at = now();
-            $transaction->status = "Success";
-            $transaction->save();
-        }
-        return view('payment.callback', compact('status', 'message'));
+// //            $meta = $data['metadata'];
+// //            $metaReference = $meta['reference'];
+// //            $amount = $data['amount'];
+//             $reference = $data['reference'];
+// //            $paidAmount = $amount / 100;
+//             $transaction = Payment::whereReference_id($reference)->firstOrFail();
+//             $transaction->paid_at = now();
+//             $transaction->status = "Success";
+//             $transaction->save();
+//         }
+//         return view('payment.callback', compact('status', 'message'));
 
     }
 

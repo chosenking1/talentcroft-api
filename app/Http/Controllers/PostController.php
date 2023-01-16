@@ -16,7 +16,7 @@ class PostController extends Controller
         // $post = Post::getpost();
         $url = Storage::disk('s3')->files('posts');
         $post = Post::latest()->get();
-        dd($url, $post[0]->id);
+        // dd($url, $post[0]->id);
         return $this->respondWithSuccess(['data' => [
             'message' => 'All post made by users', 
             'post' => $post,

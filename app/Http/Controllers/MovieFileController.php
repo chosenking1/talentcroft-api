@@ -13,15 +13,16 @@ class MovieFileController extends Controller
 {
     public function uploadmovie(Request $request, Movie $movie)
     {
-        $file = $request->url;
+        $file = $request->video;
         // dd($file);
         $movie_location = "movies";
         $thumbnail_location = "thumbnails";
         $aws = env('AWS_ROUTE');
-        $movieFile = $movie->episodes()->create($request->only(['name', 'decription']));
-        
+        $movieFile = $movie->episodes()->create($request->only(['name', 'decription', 'age_rating', 'director', 'genre']));
+        // dd($movie->id, $movieFile->id);
         $path = $file->storeAs($movie->id, "$movieFile->id.{$file->extension()}", 'processing');
-
+        
+        // $file_size = $file->getSize();
         $movie_id = $movie->id;
         $file_id = $movieFile->id;
         // $destination = "$movie_id/$file_id/";
@@ -39,7 +40,7 @@ class MovieFileController extends Controller
         $movieFile->update([
             'thumbnail' => "$aws/$thumbnails[0]",
             'duration' => $duration,
-            "url" => "$aws/$filename",
+            "video" => "$aws/$filename",
         ]);
 
         $media = $media->export()
@@ -65,16 +66,9 @@ class MovieFileController extends Controller
             // })
             ->toDisk('s3')
             ->save($filename);
-        $size = 0;
-
-//        if (File::exists()) {
-
-//        }
-        // foreach (File::allFiles(storage_path("processed/videos/{$destination}")) as $file) {
-            // $file_size += $file->getSize();
-        //      }
         // UPDATE file processed at and filesize
-        $movieFile->update(['processed_at' => now()]);
+        $movieFile->update(['processed_at' => now(), //'size' => $file_size / 1048576
+    ]);
         //remove $media created files
         $media->cleanupTemporaryFiles();
         
