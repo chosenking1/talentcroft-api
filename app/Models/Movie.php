@@ -12,7 +12,7 @@ class Movie extends Model
     protected $table = 'movies';
 
     protected $fillable = ['name', 'description', 'type', 'tags', 'status', 'visibility', 'release_date',
-        'available_from', 'available_to', 'amount', 'currency', 'has_discount'];
+        'available_from', 'available_to', 'amount', 'currency', 'has_discount', 'age_rating','director', 'year'];
     protected $searchable = ['name', 'description'];
 
     public function user()
