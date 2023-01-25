@@ -93,7 +93,8 @@ class PaymentController extends Controller
 //            $amount = $data['amount'];
 =======
        $payment = Paystack::getPaymentData();
-        dd($payment);
+       $paystack = (new PaystackService())->verifyPayment();
+        dd($payment, $paystack);
 //         $paystack = (new PaystackService())->verifyPayment();
 //         $status = 'unknown';
 //         $message = $paystack['data']['message'];
